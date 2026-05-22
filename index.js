@@ -3,51 +3,19 @@
 
 console.log('Proximamente express');
 
-import express from 'express';
+import express from 'express'; //Al hacer esto traigo todo el modulo de express
+import productsRouter from "./src/routes/products.router.js";
 
 const app = express();
 
-// Array de productos
-const products = [
-    {
-        id: 1,
-        nombre: "Remera",
-        precio: 15000
-    },
-    {
-        id: 2,
-        nombre: "Pantalón",
-        precio: 30000
-    }
-];
+app.use(express.json());
 
 //Get index
 app.get("/", (req,res) => {
     res.send("Hola Mundo");
 });
 
-//Get listado de productos
-app.get('/products', (req,res) => {
-    res.send(products);
-});
-
-//Get id de producto
-/*app.get("/products/:id", (req,res) => {
-    res.send(`Producto ${req.params.id}`);
-});*/
-app.get("/products/:id", (req, res) => {
-    const id = Number(req.params.id);
-
-    const product = products.find(p => p.id === id);
-
-    if (!product) {
-        return res.status(404).send({
-            mensaje: "Producto no encontrado"
-        });
-    }
-
-    res.send(product);
-});
+app.use(productsRouter);
 
 //Middleworld
 app.use((req, res, next) => {
