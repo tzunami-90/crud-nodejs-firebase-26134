@@ -5,22 +5,32 @@ console.log('Proximamente express');
 
 import express from 'express'; //Al hacer esto traigo todo el modulo de express
 import productsRouter from "./src/routes/products.router.js";
+import usersRouter from "./src/routes/users.router.js";
 
 const app = express();
+const PORT = 3000;
 
 app.use(express.json());
 
 //Get index
-app.get("/", (req,res) => {
-    res.send("Hola Mundo");
+app.get("/", (req, res) => {
+  res.send(`
+    <h1>API de Productos</h1>
+    <p>Servidor funcionando correctamente</p>
+  `);
 });
 
 app.use(productsRouter);
+app.use(usersRouter);
 
-//Middleworld
-app.use((req, res, next) => {
-    console.log(req.method, req.url);
-    next();
+app.get("/up", (req, res) => {
+  res.json({
+    status: "ok",
+    message: "Servidor activo",
+  });
 });
 
-app.listen(3000, () => console.log("http://localhost:3000"));
+
+app.listen(PORT, () => {
+  console.log(`http://localhost:${PORT}`);
+});
